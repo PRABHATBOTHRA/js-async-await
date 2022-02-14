@@ -34,20 +34,28 @@ const getPositions = (opts) => {
       (success) => {
         resolve(success);
       },
-      (error) => {  reject(error)},
-    
+      (error) => {
+        reject(error);
+      }
     );
   });
   return promise;
 };
-function trackUserHandler() {
+async function trackUserHandler() {
   let poisitionData;
-  getPositions()
-    .then((posData) => {
+  try {
+    const posTimeer = await getPositions();
+    poisitionData = posTimeer;
+    setTimer(2000);
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(poisitionData);
+  /* .then((posData) => {
       poisitionData = posData;
       return setTimer(2000);
-    },err => console.log(err))
-    .then((data) => console.log(data, poisitionData));
+    },err => console.log(err)) */
+  // .then((data) => console.log(data, poisitionData));
   /* navigator.geolocation.getCurrentPosition(
     (postData) => {
      setTimer(2000).then((data) => {
@@ -63,23 +71,14 @@ function trackUserHandler() {
   });
   console.log("Clicked!");
 
- /*  getPositions().then((posData) => {
+  /*  getPositions().then((posData) => {
     setTimer(2000).then((data) => {
       console.log(posData);
     });
   });*/
 }
- 
+
 button.addEventListener("click", trackUserHandler);
-
-/* Promise.race([getPositions(), setTimer(1000)]).then((data) => {
-  console.log(data);
-}); */
-
-Promise.all([getPositions(), setTimer(1000)]).then((data) => {
-  console.log(data);
-});
-
 
 /* let result = 0;
 
